@@ -1,36 +1,37 @@
-# This is a basic workflow to help you get started with Actions
+import time
 
-name: CI
+def ask_question(question, correct_answer):
+    user_answer = input(question + " ")
+    if user_answer.lower() == correct_answer.lower():
+        return True
+    else:
+        print("Incorrect")
+        return False
 
-# Controls when the workflow will run
-on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+questions = [
+    ("What is the capital of France?", "Paris"),
+    ("Which planet is known as the Red Planet?", "Mars"),
+    ("What's the largest mammal?", "Blue Whale"),
+    ("In which year did World War I begin?", "1914"),
+    ("Who painted the Mona Lisa?", "Leonardo da Vinci"),
+    ("What's the symbol for the chemical element oxygen?", "O"),
+    ("How many continents are there?", "7"),
+    ("Which gas do plants absorb from the atmosphere?", "Carbon dioxide"),
+    ("What's the largest organ in the human body?", "Skin"),
+    ("What's the tallest mountain in the world?", "Mount Everest")
+]
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+start_time = time.time()
+score = 0
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
-jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
+for question, answer in questions:
+    if ask_question(question, answer):
+        score += 1
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
+end_time = time.time()
+time_taken = end_time - start_time
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
-
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+print("Quiz completed! You got", score, "out of", len(questions), "questions correct.")
+print("Time taken:", round(time_taken, 2), "seconds")
+print("Correct:", score)
+print("Incorrect:", len(questions) - score)
